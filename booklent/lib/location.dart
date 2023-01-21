@@ -11,6 +11,7 @@ class location extends StatefulWidget {
 
 class _locationState extends State<location> {
   String? location;
+  bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +103,74 @@ class _locationState extends State<location> {
                         onChanged: (String? value) {
                           setState(() {
                             location = value;
+                            isVisible = !isVisible;
                           });
                         },
+                      ),
+                    ),
+                    Visibility(
+                      visible: isVisible,
+                      maintainSize: true,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 50),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent)),
+                                    labelText: 'Town',
+                                    labelStyle: TextStyle(
+                                        color: Color(0xFF007981),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                    hintText: 'Enter your town',
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[700])),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 50),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent)),
+                                    labelText: 'City',
+                                    labelStyle: TextStyle(
+                                        color: Color(0xFF007981),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                    hintText: 'Enter your city',
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[700])),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            ElevatedButton(
+                              style: OutlinedButton.styleFrom(
+                                  backgroundColor: Color(0xFF88F8FF)),
+                              onPressed: () {},
+                              child: Text(
+                                'Next',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ],
