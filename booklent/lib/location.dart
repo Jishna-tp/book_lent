@@ -12,6 +12,7 @@ class location extends StatefulWidget {
 class _locationState extends State<location> {
   String? location;
   bool isVisible = false;
+  bool visible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +91,7 @@ class _locationState extends State<location> {
                             if (location == value) {
                               setState(() {
                                 isVisible = false;
+                                visible = true;
                               });
                             }
                           });
@@ -111,6 +113,7 @@ class _locationState extends State<location> {
                             if (location == value) {
                               setState(() {
                                 isVisible = true;
+                                visible = true;
                               });
                             }
                           });
@@ -166,22 +169,25 @@ class _locationState extends State<location> {
                             SizedBox(
                               height: 30,
                             ),
-                            ElevatedButton(
-                              style: OutlinedButton.styleFrom(
-                                  backgroundColor: Color(0xFF88F8FF)),
-                              onPressed: () {},
-                              child: Text(
-                                'Next',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                            ),
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    Visibility(
+                      visible: visible,
+                      child: ElevatedButton(
+                        style: OutlinedButton.styleFrom(
+                            backgroundColor: Color(0xFF88F8FF)),
+                        onPressed: () {},
+                        child: Text(
+                          'Next',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
