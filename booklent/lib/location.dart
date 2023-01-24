@@ -11,7 +11,7 @@ class location extends StatefulWidget {
 
 class _locationState extends State<location> {
   String? location;
-  bool isVisible = true;
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +87,11 @@ class _locationState extends State<location> {
                         onChanged: (String? value) {
                           setState(() {
                             location = value;
+                            if (location == value) {
+                              setState(() {
+                                isVisible = false;
+                              });
+                            }
                           });
                         },
                       ),
@@ -103,7 +108,11 @@ class _locationState extends State<location> {
                         onChanged: (String? value) {
                           setState(() {
                             location = value;
-                            isVisible = !isVisible;
+                            if (location == value) {
+                              setState(() {
+                                isVisible = true;
+                              });
+                            }
                           });
                         },
                       ),
