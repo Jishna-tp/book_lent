@@ -77,13 +77,19 @@ class _LoginState extends State<Login> {
                   ),
                 ],
               ),
-              // SizedBox(
-              //   height: 100,
-              // ),
+
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    CircleAvatar(
+                      radius: 70.0,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage(
+                        'images/logo3.png',
+                      ),
+                    ),
+
                     Text(
                       'WELCOME BACK !',
                       style: TextStyle(

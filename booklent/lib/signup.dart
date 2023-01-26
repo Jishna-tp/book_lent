@@ -54,22 +54,30 @@ class signup extends StatelessWidget {
                   ),
                 ],
               ),
-              // SizedBox(
-              //   height: 10,
-              // ),
               Center(
                 child: Column(
                   children: [
-                    Text(
-                      'Sign Up',
-                      style: TextStyle(
-                          color: Color(0xFF007981),
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: AssetImage(
+                            'images/logo3.png',
+                          ),
+                        ),
+                        Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              color: Color(0xFF007981),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 50),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: TextField(
                         decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -174,9 +182,6 @@ class signup extends StatelessWidget {
                             hintText: 'Enter password again',
                             hintStyle: TextStyle(color: Colors.grey[700])),
                       ),
-                    ),
-                    SizedBox(
-                      height: 5,
                     ),
                     SizedBox(
                       height: 10,
