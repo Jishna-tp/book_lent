@@ -53,12 +53,16 @@ class Passwordchange extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 30,
-              ),
               Center(
                 child: Column(
                   children: [
+                    CircleAvatar(
+                      radius: 70.0,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage(
+                        'images/logo3.png',
+                      ),
+                    ),
                     Text(
                       'Forgot Password?',
                       style: TextStyle(

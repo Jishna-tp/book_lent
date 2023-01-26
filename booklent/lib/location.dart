@@ -64,6 +64,13 @@ class _locationState extends State<location> {
               Center(
                 child: Column(
                   children: [
+                    CircleAvatar(
+                      radius: 70.0,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage(
+                        'images/logo3.png',
+                      ),
+                    ),
                     Text(
                       'Enter your Location',
                       style: TextStyle(
@@ -130,7 +137,7 @@ class _locationState extends State<location> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 50),
+                                  vertical: 10, horizontal: 50),
                               child: TextField(
                                 decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
