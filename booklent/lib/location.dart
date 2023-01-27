@@ -1,21 +1,41 @@
+import 'package:booklent/genre.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class location extends StatefulWidget {
-  const location({super.key});
+  location({super.key});
 
   @override
   State<location> createState() => _locationState();
 }
 
 class _locationState extends State<location> {
+  TextEditingController t1 = TextEditingController();
+
+  final town = TextEditingController(text: '');
+  final city = TextEditingController(text: '');
+
   String? location;
   bool isVisible = false;
   bool visible = false;
 
   @override
   Widget build(BuildContext context) {
+    addloc() async {
+      var response = await http
+          .post(Uri.parse('http://192.168.43.200:8080/bk_api/loc.php'), body: {
+        "town": town.text,
+        "city": city.text,
+      });
+      print(response.body);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => genre(),
+      ));
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -152,6 +172,7 @@ class _locationState extends State<location> {
                                     hintText: 'Enter your town',
                                     hintStyle:
                                         TextStyle(color: Colors.grey[700])),
+                                controller: town,
                               ),
                             ),
                             Padding(
@@ -171,6 +192,7 @@ class _locationState extends State<location> {
                                     hintText: 'Enter your city',
                                     hintStyle:
                                         TextStyle(color: Colors.grey[700])),
+                                controller: city,
                               ),
                             ),
                             SizedBox(
@@ -185,7 +207,9 @@ class _locationState extends State<location> {
                       child: ElevatedButton(
                         style: OutlinedButton.styleFrom(
                             backgroundColor: Color(0xFF88F8FF)),
-                        onPressed: () {},
+                        onPressed: () {
+                          addloc();
+                        },
                         child: Text(
                           'Next',
                           style: TextStyle(
