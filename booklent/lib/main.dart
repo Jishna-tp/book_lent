@@ -73,10 +73,11 @@ class Home extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 250,
+                height: 300,
                 decoration: BoxDecoration(
-                    image:
-                        DecorationImage(image: AssetImage('images/pic1.png'))),
+                    image: DecorationImage(
+                        image: AssetImage('images/pic1.png'),
+                        fit: BoxFit.fill)),
               ),
               Row(
                 children: [
@@ -210,10 +211,11 @@ class next1 extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 250,
+                height: 300,
                 decoration: BoxDecoration(
-                    image:
-                        DecorationImage(image: AssetImage('images/pic2.png'))),
+                    image: DecorationImage(
+                        image: AssetImage('images/pic2.png'),
+                        fit: BoxFit.fill)),
               ),
               Row(
                 children: [
@@ -347,10 +349,11 @@ class next2 extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 250,
+                height: 300,
                 decoration: BoxDecoration(
-                    image:
-                        DecorationImage(image: AssetImage('images/pic3.png'))),
+                    image: DecorationImage(
+                        image: AssetImage('images/pic3.png'),
+                        fit: BoxFit.fill)),
               ),
               Row(
                 children: [
@@ -484,10 +487,11 @@ class next3 extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 250,
+                height: 300,
                 decoration: BoxDecoration(
-                    image:
-                        DecorationImage(image: AssetImage('images/pic4.png'))),
+                    image: DecorationImage(
+                        image: AssetImage('images/pic4.png'),
+                        fit: BoxFit.fill)),
               ),
               Row(
                 children: [
