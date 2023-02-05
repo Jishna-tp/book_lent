@@ -10,15 +10,15 @@ $city=$_POST['city'];
 
 $r="SELECT * FROM `idtbl`";
     $r1=mysqli_query($con,$r);
-    $uidd="";
+    $ldd="";
     if($row=mysqli_fetch_assoc($r1))
     {
-        $uidd=$row['loc_id'];
+        $ldd=$row['loc_id'];
         
     }
-    $uidd1=$uidd+1;
-        $locreg="LOC00_".$uidd1;
-    $_SESSION['locid'] = $uidd1;
+    $ldd1=$ldd+1;
+        $locreg="LOC00_".$ldd1;
+    $_SESSION['locid'] = $ldd1;
 
 
 
