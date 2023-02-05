@@ -1,4 +1,5 @@
 import 'package:booklent/forgot_pw.dart';
+import 'package:booklent/login.dart';
 import 'package:booklent/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -15,20 +16,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: Home(),
     );
   }
 }
 
-class Login extends StatefulWidget {
-  const Login({super.key});
-
-  @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  bool? isremember = false;
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -77,157 +71,459 @@ class _LoginState extends State<Login> {
                   ),
                 ],
               ),
-
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CircleAvatar(
-                      radius: 70.0,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: AssetImage(
-                        'images/logo3.png',
+              Column(
+                children: [
+                  Container(
+                    width: 500,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('images/pic1.png'))),
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 40),
+                        child: Text(
+                          'Search For \nBibiliophiles',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
                       ),
+                    ],
+                  ),
+                  FloatingActionButton(
+                    onPressed: (() {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => next1(),
+                      ));
+                    }),
+                    backgroundColor: Colors.white,
+                    hoverColor: Colors.white,
+                    elevation: 0,
+                    hoverElevation: 0,
+                    child: Icon(
+                      Icons.keyboard_arrow_right_sharp,
+                      color: Colors.black,
                     ),
-
-                    Text(
-                      'WELCOME BACK !',
-                      style: TextStyle(
-                          color: Color(0xFF007981),
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Please Enter your Details',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 50),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                            labelText: 'Username',
-                            labelStyle: TextStyle(
-                                color: Color(0xFF007981),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                            hintText: 'Enter username',
-                            hintStyle: TextStyle(color: Colors.grey[700])),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 50),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                                color: Color(0xFF007981),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                            hintText: 'Enter password',
-                            hintStyle: TextStyle(color: Colors.grey[700])),
-                      ),
-                    ),
-                    // SizedBox(
-                    //   height: 5,
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Row(
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        // height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
                           children: [
-                            Checkbox(
-                                activeColor: Color(0xFF88F8FF),
-                                checkColor: Color(0xFF007981),
-                                value: isremember,
-                                onChanged: ((value) {
-                                  setState(() {
-                                    isremember = value;
-                                  });
-                                })),
-                            Text(
-                              'Remember me',
-                              style: TextStyle(fontSize: 13),
+                            Align(
+                              widthFactor: 1,
+                              heightFactor: 0.5,
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                height: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xE610F1FF)),
+                              ),
                             ),
+                            Align(
+                              widthFactor: 0.5,
+                              heightFactor: 1,
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xE688F8FF)),
+                              ),
+                            )
                           ],
                         ),
-                        InkWell(
-                          child: Text(
-                            'Forgot Password ?',
-                            style: TextStyle(
-                                fontSize: 13,
-                                decoration: TextDecoration.underline),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Passwordchange(),
-                            ));
-                          },
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor: Color(0xFF88F8FF)),
-                      onPressed: () {},
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't Have An Account? ",
-                          style: TextStyle(
-                            fontSize: 13,
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class next1 extends StatelessWidget {
+  const next1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Color(0x4D75F7FF),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Stack(
+                        children: [
+                          Align(
+                            widthFactor: 0.5,
+                            heightFactor: 0.5,
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              height: 200,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xE610F1FF)),
+                            ),
                           ),
-                        ),
-                        InkWell(
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                                fontSize: 13,
-                                decoration: TextDecoration.underline),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => signup(),
-                            ));
-                          },
-                        ),
-                      ],
-                    ))
-                  ],
+                          Align(
+                            widthFactor: 0.5,
+                            heightFactor: 0.5,
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xE688F8FF)),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+                decoration: BoxDecoration(
+                    image:
+                        DecorationImage(image: AssetImage('images/pic2.png'))),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: Text(
+                      'Exchange Book \nWith Them',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+              FloatingActionButton(
+                onPressed: (() {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => next2(),
+                  ));
+                }),
+                backgroundColor: Colors.white,
+                hoverColor: Colors.white,
+                elevation: 0,
+                hoverElevation: 0,
+                child: Icon(
+                  Icons.keyboard_arrow_right_sharp,
+                  color: Colors.black,
                 ),
               ),
-              // SizedBox(
-              //   height: 30,
-              // ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        // height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Align(
+                              widthFactor: 1,
+                              heightFactor: 0.5,
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                height: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xE610F1FF)),
+                              ),
+                            ),
+                            Align(
+                              widthFactor: 0.5,
+                              heightFactor: 1,
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xE688F8FF)),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class next2 extends StatelessWidget {
+  const next2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Color(0x4D75F7FF),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Stack(
+                        children: [
+                          Align(
+                            widthFactor: 0.5,
+                            heightFactor: 0.5,
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              height: 200,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xE610F1FF)),
+                            ),
+                          ),
+                          Align(
+                            widthFactor: 0.5,
+                            heightFactor: 0.5,
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xE688F8FF)),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+                decoration: BoxDecoration(
+                    image:
+                        DecorationImage(image: AssetImage('images/pic3.png'))),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: Text(
+                      'Read The Book \nYou Love',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+              FloatingActionButton(
+                onPressed: (() {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => next3(),
+                  ));
+                }),
+                backgroundColor: Colors.white,
+                hoverColor: Colors.white,
+                elevation: 0,
+                hoverElevation: 0,
+                child: Icon(
+                  Icons.keyboard_arrow_right_sharp,
+                  color: Colors.black,
+                ),
+              ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        // height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Align(
+                              widthFactor: 1,
+                              heightFactor: 0.5,
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                height: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xE610F1FF)),
+                              ),
+                            ),
+                            Align(
+                              widthFactor: 0.5,
+                              heightFactor: 1,
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xE688F8FF)),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class next3 extends StatelessWidget {
+  const next3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Color(0x4D75F7FF),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Stack(
+                        children: [
+                          Align(
+                            widthFactor: 0.5,
+                            heightFactor: 0.5,
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              height: 200,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xE610F1FF)),
+                            ),
+                          ),
+                          Align(
+                            widthFactor: 0.5,
+                            heightFactor: 0.5,
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xE688F8FF)),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+                decoration: BoxDecoration(
+                    image:
+                        DecorationImage(image: AssetImage('images/pic4.png'))),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: Text(
+                      'Connect With \nPeople And \nReturn The Book',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+              FloatingActionButton(
+                onPressed: (() {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ));
+                }),
+                backgroundColor: Colors.white,
+                hoverColor: Colors.white,
+                elevation: 0,
+                hoverElevation: 0,
+                child: Icon(
+                  Icons.keyboard_arrow_right_sharp,
+                  color: Colors.black,
+                ),
+              ),
               Column(
                 children: [
                   Row(

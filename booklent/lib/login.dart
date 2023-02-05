@@ -1,44 +1,21 @@
-import 'package:booklent/location.dart';
-import 'package:booklent/login.dart';
-import 'package:booklent/main.dart';
+import 'package:booklent/forgot_pw.dart';
+import 'package:booklent/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:http/http.dart' as http;
 
-import 'dart:convert';
+class Login extends StatefulWidget {
+  const Login({super.key});
 
-class signup extends StatelessWidget {
-  TextEditingController t1 = TextEditingController();
+  @override
+  State<Login> createState() => _LoginState();
+}
 
-  signup({super.key});
-
-  final name = TextEditingController(text: '');
-  final username = TextEditingController(text: '');
-  final phone = TextEditingController(text: '');
-  final email = TextEditingController(text: '');
-  final password = TextEditingController(text: '');
-  final confirmpassword = TextEditingController(text: '');
+class _LoginState extends State<Login> {
+  bool? isremember = false;
 
   @override
   Widget build(BuildContext context) {
-    makeData() async {
-      var response = await http.post(
-          Uri.parse('http://192.168.43.208:8080/bk_api/adduser.php'),
-          body: {
-            "name": name.text,
-            "username": username.text,
-            "phone": phone.text,
-            "email": email.text,
-            "password": password.text,
-            "confirmpassword": confirmpassword.text
-          });
-      print(response.body);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => location(),
-      ));
-    }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -84,106 +61,55 @@ class signup extends StatelessWidget {
                   ),
                 ],
               ),
+
               Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage(
-                            'images/logo3.png',
-                          ),
-                        ),
-                        Text(
-                          'Sign Up',
-                          style: TextStyle(
-                              color: Color(0xFF007981),
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                            labelText: 'Name',
-                            labelStyle: TextStyle(
-                                color: Color(0xFF007981),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                            hintText: 'Enter name',
-                            hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: name,
+                    CircleAvatar(
+                      radius: 70.0,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage(
+                        'images/logo3.png',
                       ),
+                    ),
+
+                    Text(
+                      'WELCOME BACK !',
+                      style: TextStyle(
+                          color: Color(0xFF007981),
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Please Enter your Details',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 50),
+                          vertical: 20, horizontal: 50),
                       child: TextField(
                         decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide:
                                     BorderSide(color: Colors.transparent)),
-                            labelText: 'User name',
+                            labelText: 'Username',
                             labelStyle: TextStyle(
                                 color: Color(0xFF007981),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15),
                             hintText: 'Enter username',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: username,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 50),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                            labelText: 'Phone Number',
-                            labelStyle: TextStyle(
-                                color: Color(0xFF007981),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                            hintText: 'Enter phonenumber',
-                            hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: phone,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 50),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                            labelText: 'Email Id',
-                            labelStyle: TextStyle(
-                                color: Color(0xFF007981),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                            hintText: 'Enter emailid',
-                            hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: email,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 50),
+                          vertical: 10, horizontal: 50),
                       child: TextField(
                         decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -197,39 +123,55 @@ class signup extends StatelessWidget {
                                 fontSize: 15),
                             hintText: 'Enter password',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: password,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 50),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                            labelText: 'Confirm Password',
-                            labelStyle: TextStyle(
-                                color: Color(0xFF007981),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                            hintText: 'Enter password again',
-                            hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: confirmpassword,
-                      ),
+                    // SizedBox(
+                    //   height: 5,
+                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                                activeColor: Color(0xFF88F8FF),
+                                checkColor: Color(0xFF007981),
+                                value: isremember,
+                                onChanged: ((value) {
+                                  setState(() {
+                                    isremember = value;
+                                  });
+                                })),
+                            Text(
+                              'Remember me',
+                              style: TextStyle(fontSize: 13),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          child: Text(
+                            'Forgot Password ?',
+                            style: TextStyle(
+                                fontSize: 13,
+                                decoration: TextDecoration.underline),
+                          ),
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Passwordchange(),
+                            ));
+                          },
+                        )
+                      ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     ElevatedButton(
                       style: OutlinedButton.styleFrom(
                           backgroundColor: Color(0xFF88F8FF)),
-                      onPressed: () {
-                        makeData();
-                      },
+                      onPressed: () {},
                       child: Text(
-                        'Next',
+                        'Login',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -237,28 +179,28 @@ class signup extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 13,
+                      height: 20,
                     ),
                     Center(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already Have An Account? ",
+                          "Don't Have An Account? ",
                           style: TextStyle(
                             fontSize: 13,
                           ),
                         ),
                         InkWell(
                           child: Text(
-                            'Log in',
+                            'Sign up',
                             style: TextStyle(
                                 fontSize: 13,
                                 decoration: TextDecoration.underline),
                           ),
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Login(),
+                              builder: (context) => signup(),
                             ));
                           },
                         ),
@@ -267,8 +209,10 @@ class signup extends StatelessWidget {
                   ],
                 ),
               ),
+              // SizedBox(
+              //   height: 30,
+              // ),
               Column(
-                // mainAxisSize: MainAxisSize.max,
                 children: [
                   Row(
                     children: [
