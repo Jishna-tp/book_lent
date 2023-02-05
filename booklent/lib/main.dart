@@ -71,47 +71,43 @@ class Home extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 250,
+                decoration: BoxDecoration(
+                    image:
+                        DecorationImage(image: AssetImage('images/pic1.png'))),
+              ),
+              Row(
                 children: [
-                  Container(
-                    width: 500,
-                    height: 200,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('images/pic1.png'))),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40),
-                        child: Text(
-                          'Search For \nBibiliophiles',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: Text(
+                      'Search For \nBibiliophiles',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                  FloatingActionButton(
-                    onPressed: (() {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => next1(),
-                      ));
-                    }),
-                    backgroundColor: Colors.white,
-                    hoverColor: Colors.white,
-                    elevation: 0,
-                    hoverElevation: 0,
-                    child: Icon(
-                      Icons.keyboard_arrow_right_sharp,
-                      color: Colors.black,
+                      textAlign: TextAlign.start,
                     ),
-                  )
+                  ),
                 ],
+              ),
+              FloatingActionButton(
+                onPressed: (() {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => next1(),
+                  ));
+                }),
+                backgroundColor: Colors.white,
+                hoverColor: Colors.white,
+                elevation: 0,
+                hoverElevation: 0,
+                child: Icon(
+                  Icons.keyboard_arrow_right_sharp,
+                  color: Colors.black,
+                ),
               ),
               Column(
                 children: [
@@ -214,7 +210,7 @@ class next1 extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 200,
+                height: 250,
                 decoration: BoxDecoration(
                     image:
                         DecorationImage(image: AssetImage('images/pic2.png'))),
@@ -351,7 +347,7 @@ class next2 extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 200,
+                height: 250,
                 decoration: BoxDecoration(
                     image:
                         DecorationImage(image: AssetImage('images/pic3.png'))),
@@ -488,7 +484,7 @@ class next3 extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 200,
+                height: 250,
                 decoration: BoxDecoration(
                     image:
                         DecorationImage(image: AssetImage('images/pic4.png'))),
