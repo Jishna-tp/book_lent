@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:booklent/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -15,7 +16,7 @@ class genre extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<List<Genre>> viewGenre() async {
       var response = await http
-          .get(Uri.parse('http://192.168.43.200:8080/bk_api/readgenre.php'));
+          .get(Uri.parse('http://192.168.43.208:8080/bk_api/readgenre.php'));
       final list = json.decode(response.body) as List<dynamic>;
       return list.map((e) => Genre.fromJson(e)).toList();
     }
@@ -74,7 +75,7 @@ class genre extends StatelessWidget {
                         style: TextStyle(
                             color: Color(0xFF007981),
                             fontWeight: FontWeight.bold,
-                            fontSize: 21),
+                            fontSize: 19),
                         textAlign: TextAlign.center,
                       )),
                   Padding(
@@ -94,9 +95,9 @@ class genre extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
+              // SizedBox(
+              //   height: 20,
+              // ),
               Expanded(
                 child: FutureBuilder(
                   future: viewGenre(),
@@ -153,7 +154,13 @@ class genre extends StatelessWidget {
                                                 style: OutlinedButton.styleFrom(
                                                     backgroundColor:
                                                         Color(0xFF88F8FF)),
-                                                onPressed: (() {}),
+                                                onPressed: (() {
+                                                  Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        home(),
+                                                  ));
+                                                }),
                                                 child: Text(
                                                   'Select',
                                                   style: TextStyle(

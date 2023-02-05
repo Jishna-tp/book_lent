@@ -23,7 +23,7 @@ class signup extends StatelessWidget {
   Widget build(BuildContext context) {
     makeData() async {
       var response = await http.post(
-          Uri.parse('http://192.168.43.200:8080/bk_api/adduser.php'),
+          Uri.parse('http://192.168.43.208:8080/bk_api/adduser.php'),
           body: {
             "name": name.text,
             "username": username.text,
