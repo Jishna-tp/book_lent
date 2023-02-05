@@ -83,33 +83,33 @@ class Passwordchange extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide:
                                     BorderSide(color: Colors.transparent)),
-                            labelText: 'Change Password',
+                            labelText: 'Email id',
                             labelStyle: TextStyle(
                                 color: Color(0xFF007981),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15),
-                            hintText: 'Enter your new password',
+                            hintText: 'Enter your email id',
                             hintStyle: TextStyle(color: Colors.grey[700])),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 50),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                            labelText: 'Confirm Password',
-                            labelStyle: TextStyle(
-                                color: Color(0xFF007981),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                            hintText: 'Enter password again',
-                            hintStyle: TextStyle(color: Colors.grey[700])),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //       vertical: 5, horizontal: 50),
+                    //   child: TextField(
+                    //     decoration: InputDecoration(
+                    //         focusedBorder: OutlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(30),
+                    //             borderSide:
+                    //                 BorderSide(color: Colors.transparent)),
+                    //         labelText: 'Confirm Password',
+                    //         labelStyle: TextStyle(
+                    //             color: Color(0xFF007981),
+                    //             fontWeight: FontWeight.bold,
+                    //             fontSize: 15),
+                    //         hintText: 'Enter password again',
+                    //         hintStyle: TextStyle(color: Colors.grey[700])),
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 20,
                     ),
