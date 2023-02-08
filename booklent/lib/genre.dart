@@ -16,7 +16,7 @@ class genre extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<List<Genre>> viewGenre() async {
       var response = await http
-          .get(Uri.parse('http://192.168.43.208:8080/bk_api/readgenre.php'));
+          .get(Uri.parse('http://192.168.43.200:8080/bk_api/readgenre.php'));
       final list = json.decode(response.body) as List<dynamic>;
       return list.map((e) => Genre.fromJson(e)).toList();
     }

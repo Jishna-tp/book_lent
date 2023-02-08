@@ -26,7 +26,7 @@ class _locationState extends State<location> {
   Widget build(BuildContext context) {
     addloc() async {
       var response = await http
-          .post(Uri.parse('http://192.168.43.208:8080/bk_api/loc.php'), body: {
+          .post(Uri.parse('http://192.168.43.200:8080/bk_api/loc.php'), body: {
         "town": town.text,
         "city": city.text,
       });

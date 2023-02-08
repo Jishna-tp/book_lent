@@ -1,8 +1,14 @@
+import 'dart:convert';
+
+import 'package:booklent/admin.dart';
 import 'package:booklent/forgot_pw.dart';
+import 'package:booklent/home.dart';
 import 'package:booklent/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -12,10 +18,40 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController t1 = TextEditingController();
+
+  final username = TextEditingController(text: '');
+  final password = TextEditingController(text: '');
+
   bool? isremember = false;
 
   @override
   Widget build(BuildContext context) {
+    postData(String username, String password) async {
+      var response = await http.get(Uri.parse(
+          'http://192.168.43.200:8080/bk_api/login.php?id=' +
+              username +
+              '&id1=' +
+              password));
+
+      final list = json.decode(response.body) as List<dynamic>;
+      list.map((e) => Idgen.fromJson(e)).toList();
+      var n1 = list.first['category'];
+      var n2 = list.first['username'];
+      var session = FlutterSession();
+      session.set("uid", n2);
+      if (n1 == "admin") {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => admin()));
+      } else if (n1 == "user") {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => home()));
+      } else {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Login()));
+      }
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -105,6 +141,7 @@ class _LoginState extends State<Login> {
                                 fontSize: 15),
                             hintText: 'Enter username',
                             hintStyle: TextStyle(color: Colors.grey[700])),
+                        controller: username,
                       ),
                     ),
                     Padding(
@@ -123,6 +160,7 @@ class _LoginState extends State<Login> {
                                 fontSize: 15),
                             hintText: 'Enter password',
                             hintStyle: TextStyle(color: Colors.grey[700])),
+                        controller: password,
                       ),
                     ),
                     // SizedBox(
@@ -169,7 +207,9 @@ class _LoginState extends State<Login> {
                     ElevatedButton(
                       style: OutlinedButton.styleFrom(
                           backgroundColor: Color(0xFF88F8FF)),
-                      onPressed: () {},
+                      onPressed: () {
+                        postData(username.text, password.text);
+                      },
                       child: Text(
                         'Login',
                         style: TextStyle(
@@ -258,5 +298,16 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+}
+
+class Idgen {
+  String? username;
+  String? category;
+
+  Idgen({this.username, this.category});
+
+  factory Idgen.fromJson(Map<String, dynamic> json) {
+    return Idgen(username: json['username'], category: json['category']);
   }
 }
