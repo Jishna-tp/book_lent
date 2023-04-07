@@ -9,36 +9,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class signup extends StatelessWidget {
-  TextEditingController t1 = TextEditingController();
-
   signup({super.key});
-
-  final name = TextEditingController(text: '');
-  final username = TextEditingController(text: '');
-  final phone = TextEditingController(text: '');
-  final email = TextEditingController(text: '');
-  final password = TextEditingController(text: '');
-  final confirmpassword = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
-    makeData() async {
-      var response = await http.post(
-          Uri.parse('http://192.168.43.200:8080/bk_api/adduser.php'),
-          body: {
-            "name": name.text,
-            "username": username.text,
-            "phone": phone.text,
-            "email": email.text,
-            "password": password.text,
-            "confirmpassword": confirmpassword.text
-          });
-      print(response.body);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => location(),
-      ));
-    }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -121,7 +95,7 @@ class signup extends StatelessWidget {
                                 fontSize: 15),
                             hintText: 'Enter name',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: name,
+                        // controller: name,
                       ),
                     ),
                     Padding(
@@ -140,7 +114,7 @@ class signup extends StatelessWidget {
                                 fontSize: 15),
                             hintText: 'Enter username',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: username,
+                        // controller: username,
                       ),
                     ),
                     Padding(
@@ -157,9 +131,9 @@ class signup extends StatelessWidget {
                                 color: Color(0xFF007981),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15),
-                            hintText: 'Enter phonenumber',
+                            hintText: 'Enter phone number',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: phone,
+                        // controller: phone,
                       ),
                     ),
                     Padding(
@@ -178,7 +152,7 @@ class signup extends StatelessWidget {
                                 fontSize: 15),
                             hintText: 'Enter emailid',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: email,
+                        // controller: email,
                       ),
                     ),
                     Padding(
@@ -197,7 +171,7 @@ class signup extends StatelessWidget {
                                 fontSize: 15),
                             hintText: 'Enter password',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: password,
+                        // controller: password,
                       ),
                     ),
                     Padding(
@@ -216,7 +190,7 @@ class signup extends StatelessWidget {
                                 fontSize: 15),
                             hintText: 'Enter password again',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        controller: confirmpassword,
+                        // controller: confirmpassword,
                       ),
                     ),
                     SizedBox(
@@ -226,7 +200,10 @@ class signup extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                           backgroundColor: Color(0xFF88F8FF)),
                       onPressed: () {
-                        makeData();
+                        // makeData();
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => location(),
+                        ));
                       },
                       child: Text(
                         'Next',

@@ -13,10 +13,10 @@ class location extends StatefulWidget {
 }
 
 class _locationState extends State<location> {
-  TextEditingController t1 = TextEditingController();
+  // TextEditingController t1 = TextEditingController();
 
-  final town = TextEditingController(text: '');
-  final city = TextEditingController(text: '');
+  // final town = TextEditingController(text: '');
+  // final city = TextEditingController(text: '');
 
   String? location;
   bool isVisible = false;
@@ -24,18 +24,6 @@ class _locationState extends State<location> {
 
   @override
   Widget build(BuildContext context) {
-    addloc() async {
-      var response = await http
-          .post(Uri.parse('http://192.168.43.200:8080/bk_api/loc.php'), body: {
-        "town": town.text,
-        "city": city.text,
-      });
-      print(response.body);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => genre(),
-      ));
-    }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -172,7 +160,7 @@ class _locationState extends State<location> {
                                     hintText: 'Enter your town',
                                     hintStyle:
                                         TextStyle(color: Colors.grey[700])),
-                                controller: town,
+                                // controller: town,
                               ),
                             ),
                             Padding(
@@ -192,7 +180,7 @@ class _locationState extends State<location> {
                                     hintText: 'Enter your city',
                                     hintStyle:
                                         TextStyle(color: Colors.grey[700])),
-                                controller: city,
+                                // controller: city,
                               ),
                             ),
                             SizedBox(
@@ -208,7 +196,10 @@ class _locationState extends State<location> {
                         style: OutlinedButton.styleFrom(
                             backgroundColor: Color(0xFF88F8FF)),
                         onPressed: () {
-                          addloc();
+                          // addloc();
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => genre(),
+                          ));
                         },
                         child: Text(
                           'Next',

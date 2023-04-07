@@ -10,16 +10,9 @@ class home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<User>> viewUser() async {
-      var response = await http
-          .get(Uri.parse('http://192.168.43.200:8080/bk_api/readuser.php'));
-      final list = json.decode(response.body) as List<dynamic>;
-      return list.map((e) => User.fromJson(e)).toList();
-    }
-
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        // toolbarHeight: 50,
         automaticallyImplyLeading: false,
         shadowColor: Colors.transparent,
         title: Center(
@@ -33,18 +26,23 @@ class home extends StatelessWidget {
         ),
         backgroundColor: Color(0xE688F8FF),
         elevation: 5.0,
-        leading: Icon(
-          Icons.menu,
-          size: 35,
-        ),
+        leading: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.menu,
+              size: 40,
+            )),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Icon(
-              Icons.search,
-              size: 30.0,
+            padding: const EdgeInsets.only(right: 20),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.account_circle,
+                size: 35,
+              ),
             ),
-          ),
+          )
         ],
         iconTheme: IconThemeData(color: Color.fromARGB(240, 0, 120, 129)),
       ),
@@ -69,74 +67,223 @@ class home extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Expanded(
-              child: FutureBuilder(
-                future: viewUser(),
-                builder: (context, data) {
-                  if (data.hasError) {
-                    return Center(child: Text("${data.error}"));
-                  } else if (data.hasData) {
-                    var items = data.data as List<User>;
-                    return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: items == null ? 0 : items.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: 200,
-                            width: 200,
-                            child: Card(
-                              color: Colors.cyan[50],
-                              shadowColor: Color(0xE688F8FF),
-                              elevation: 10,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                        child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      // crossAxisAlignment:
-                                      //     CrossAxisAlignment.start,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 50,
-                                          backgroundColor: Colors.white,
-                                          child: Icon(Icons.person),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Text(
-                                          items[index].username.toString(),
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                          textAlign: TextAlign.center,
-                                        )
-                                      ],
-                                    ))
-                                  ],
-                                ),
-                              ),
+            Container(
+              margin: EdgeInsets.all(8),
+              height: 150,
+              width: MediaQuery.of(context).size.width,
+              child: Expanded(
+                  child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Card(
+                      color: Colors.cyan[50],
+                      shadowColor: Color(0xE688F8FF),
+                      elevation: 10,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment:
+                          //     CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.person),
                             ),
-                          );
-                        });
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Text(
+                              'username',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      )),
+                  Card(
+                      color: Colors.cyan[50],
+                      shadowColor: Color(0xE688F8FF),
+                      elevation: 10,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment:
+                          //     CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.person),
+                            ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Text(
+                              'username',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      )),
+                  Card(
+                      color: Colors.cyan[50],
+                      shadowColor: Color(0xE688F8FF),
+                      elevation: 10,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment:
+                          //     CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.person),
+                            ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Text(
+                              'username',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      )),
+                  Card(
+                      color: Colors.cyan[50],
+                      shadowColor: Color(0xE688F8FF),
+                      elevation: 10,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment:
+                          //     CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.person),
+                            ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Text(
+                              'username',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      )),
+                  Card(
+                      color: Colors.cyan[50],
+                      shadowColor: Color(0xE688F8FF),
+                      elevation: 10,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment:
+                          //     CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.person),
+                            ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Text(
+                              'username',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      )),
+                  Card(
+                      color: Colors.cyan[50],
+                      shadowColor: Color(0xE688F8FF),
+                      elevation: 10,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment:
+                          //     CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.person),
+                            ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Text(
+                              'username',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      )),
+                  Card(
+                      color: Colors.cyan[50],
+                      shadowColor: Color(0xE688F8FF),
+                      elevation: 10,
+                      margin: EdgeInsets.all(10),
+                      child: Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment:
+                          //     CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.person),
+                            ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Text(
+                              'username',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      )),
+                ],
+              )),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            // SizedBox(
+            //   height: 20,
+            // ),
             Text(
               "Books You May Like",
               style: TextStyle(
@@ -185,29 +332,42 @@ class home extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         fontSize: 18),
                                   ),
-                                  Text(
-                                    'Genre',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Icon(
-                                        Icons.swap_horiz_rounded,
+                                        Icons.location_on,
                                         color: Colors.green[800],
-                                        size: 40,
                                       ),
                                       SizedBox(
-                                        width: 50,
+                                        width: 10,
                                       ),
-                                      Icon(
-                                        Icons.attach_money_outlined,
-                                        color: Colors.green[800],
-                                        size: 30,
-                                      )
+                                      Text(
+                                        'location',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     ],
-                                  )
+                                  ),
+                                  // Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     Icon(
+                                  //       Icons.swap_horiz_rounded,
+                                  //       color: Colors.green[800],
+                                  //       size: 40,
+                                  //     ),
+                                  //     SizedBox(
+                                  //       width: 50,
+                                  //     ),
+                                  //     Icon(
+                                  //       Icons.attach_money_outlined,
+                                  //       color: Colors.green[800],
+                                  //       size: 30,
+                                  //     )
+                                  //   ],
+                                  // ),
                                 ],
                               ),
                             ],
@@ -244,29 +404,43 @@ class home extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         fontSize: 18),
                                   ),
-                                  Text(
-                                    'Genre',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Icon(
-                                        Icons.swap_horiz_rounded,
+                                        Icons.location_on,
                                         color: Colors.green[800],
-                                        size: 40,
                                       ),
                                       SizedBox(
-                                        width: 50,
+                                        width: 10,
                                       ),
-                                      Icon(
-                                        Icons.attach_money_outlined,
-                                        color: Colors.green[800],
-                                        size: 30,
-                                      )
+                                      Text(
+                                        'location',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     ],
-                                  )
+                                  ),
+
+                                  // Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     Icon(
+                                  //       Icons.swap_horiz_rounded,
+                                  //       color: Colors.green[800],
+                                  //       size: 40,
+                                  //     ),
+                                  //     SizedBox(
+                                  //       width: 50,
+                                  //     ),
+                                  //     Icon(
+                                  //       Icons.attach_money_outlined,
+                                  //       color: Colors.green[800],
+                                  //       size: 30,
+                                  //     )
+                                  //   ],
+                                  // )
                                 ],
                               ),
                             ],
@@ -303,29 +477,42 @@ class home extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         fontSize: 18),
                                   ),
-                                  Text(
-                                    'Genre',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Icon(
-                                        Icons.swap_horiz_rounded,
+                                        Icons.location_on,
                                         color: Colors.green[800],
-                                        size: 40,
                                       ),
                                       SizedBox(
-                                        width: 50,
+                                        width: 10,
                                       ),
-                                      Icon(
-                                        Icons.attach_money_outlined,
-                                        color: Colors.green[800],
-                                        size: 30,
-                                      )
+                                      Text(
+                                        'location',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     ],
-                                  )
+                                  ),
+                                  // Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     Icon(
+                                  //       Icons.swap_horiz_rounded,
+                                  //       color: Colors.green[800],
+                                  //       size: 40,
+                                  //     ),
+                                  //     SizedBox(
+                                  //       width: 50,
+                                  //     ),
+                                  //     Icon(
+                                  //       Icons.attach_money_outlined,
+                                  //       color: Colors.green[800],
+                                  //       size: 30,
+                                  //     )
+                                  //   ],
+                                  // )
                                 ],
                               ),
                             ],
@@ -363,29 +550,43 @@ class home extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         fontSize: 18),
                                   ),
-                                  Text(
-                                    'Genre',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Icon(
-                                        Icons.swap_horiz_rounded,
+                                        Icons.location_on,
                                         color: Colors.green[800],
-                                        size: 40,
                                       ),
                                       SizedBox(
-                                        width: 50,
+                                        width: 10,
                                       ),
-                                      Icon(
-                                        Icons.attach_money_outlined,
-                                        color: Colors.green[800],
-                                        size: 30,
-                                      )
+                                      Text(
+                                        'location',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     ],
-                                  )
+                                  ),
+
+                                  // Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     Icon(
+                                  //       Icons.swap_horiz_rounded,
+                                  //       color: Colors.green[800],
+                                  //       size: 40,
+                                  //     ),
+                                  //     SizedBox(
+                                  //       width: 50,
+                                  //     ),
+                                  //     Icon(
+                                  //       Icons.attach_money_outlined,
+                                  //       color: Colors.green[800],
+                                  //       size: 30,
+                                  //     )
+                                  //   ],
+                                  // )
                                 ],
                               ),
                             ],
@@ -398,46 +599,6 @@ class home extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark, color: Colors.black),
-            label: 'Bookmark',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications, color: Colors.black),
-            label: 'Notification',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message, color: Colors.black),
-            label: 'Chat',
-          ),
-        ],
-        //currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        // onTap: _onItemTapped,
-      ),
     );
-  }
-}
-
-class User {
-  String? name;
-  String? username;
-  String? phone;
-  String? email;
-
-  User({this.name, this.username, this.phone, this.email});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-        name: json['name'],
-        username: json['username'],
-        phone: json['phone_no'],
-        email: json['email_id']);
   }
 }
