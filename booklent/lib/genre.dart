@@ -1,18 +1,74 @@
 import 'dart:convert';
 
 import 'package:booklent/home.dart';
+import 'package:booklent/login.dart';
+import 'package:booklent/signup.dart';
 import 'package:booklent/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
-class genre extends StatelessWidget {
-  void onSearch(String enteredkeyword) {}
+class genre extends StatefulWidget {
   genre({super.key});
 
   @override
+  State<genre> createState() => _genreState();
+  static var genid="";
+}
+
+class _genreState extends State<genre> {
+
+  late List data;
+  late List outputList;
+  var len=0;
+  late TextEditingController filt;
+  bool isSearching = false;
+
+  void List_function() async {
+    var url = Uri.parse("http://192.168.43.200:8000/genre/genview/");
+    Response resp1 = await get(url);
+    // data = jsonDecode(resp1.body);
+    setState(() {
+      data = jsonDecode(resp1.body);
+      outputList=data;
+      len=outputList.length;
+      print(len);
+      isSearching = false;
+    });
+    print(resp1.body);
+  }
+  void postdata(genid)async {
+    String url="http://192.168.43.200:8000/genreselect/selectgen/";
+    var resp=await post(url,body:{
+      "uid":signup.regid,
+      "genid":genid
+    });
+    genre.genid=resp.body;
+    print(signup.regid);
+    print(genre.genid);
+  }
+
+  void initState(){
+    List_function();
+    filt=TextEditingController();
+    setState(() {
+      isSearching = true;
+    });
+  }
+
+  void clearSearch(){
+    setState(() {
+      List_function();
+      filt.clear();
+      outputList.clear();
+      isSearching = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // List_function();
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -63,7 +119,7 @@ class genre extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 50),
                       child: Text(
-                        'Choose the category that you enjoy reading. This will help us recommend stories you will love.',
+                        'Choose any 3 categories that you enjoy reading. This will help us recommend stories you will love.',
                         style: TextStyle(
                             color: Color(0xFF007981),
                             fontWeight: FontWeight.bold,
@@ -71,92 +127,193 @@ class genre extends StatelessWidget {
                         textAlign: TextAlign.center,
                       )),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 50),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
                     child: TextField(
-                      onChanged: (value) => onSearch(value),
+                      controller: filt,
+                      onChanged: (data1){
+                          if (data1!="")
+                          {
+                            setState(() {
+                            outputList = data.where((o) => o['genre_name'].contains(data1)).toList();
+                            // outputList = data.where((o) => o['name']==data1).toList();
+                            });
+                          }
+                          else
+                          {
+                            setState(() {
+                            outputList=data;
+                            });
+                          }
+
+                          // print(data);
+                          },
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 30),
-                          hintText: 'Search',
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              borderSide: BorderSide())),
+                        contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                        hintText: 'Search...',
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.green[800],
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.green[800],
+                          ),
+                          onPressed: (){
+                            clearSearch();
+                          }
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide.none),
+                        filled: true,
+                        fillColor: Colors.cyan[100],
+                      ),
                     ),
+
                   ),
                 ],
               ),
-              // SizedBox(
-              //   height: 20,
-              // ),
-              // // Expanded(
-              // //   child: FutureBuilder(
-              // //     future: viewGenre(),
-              // //     builder: (context, data) {
-              // //       if (data.hasError) {
-              // //         return Center(child: Text("${data.error}"));
-              // //       } else if (data.hasData) {
-              // //         var items = data.data as List<Genre>;
-              // //         return ListView.builder(
-              // //             itemCount: items == null ? 0 : items.length,
-              // //             itemBuilder: (context, index) {
-              // //               return Card(
-              // //                 color: Colors.cyan[50],
-              // //                 shadowColor: Color(0xE688F8FF),
-              // //                 elevation: 10,
-              // //                 margin: EdgeInsets.symmetric(
-              // //                     horizontal: 10, vertical: 10),
-              // //                 child: Container(
-              // //                   padding: EdgeInsets.all(8),
-              // //                   child: Row(
-              // //                     mainAxisAlignment: MainAxisAlignment.center,
-              // //                     crossAxisAlignment: CrossAxisAlignment.center,
-              // //                     children: [
               Expanded(
-                  child: Container(
-                padding: EdgeInsets.only(bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Padding(
-                    //   padding: EdgeInsets.only(left: 8, right: 8),
-                    //   child: Text(
-                    //     items[index].genreid.toString(),
-                    //   ),
-                    // ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8, right: 8),
-                      child: Text(
-                        'genre',
-                        style: TextStyle(
-                            color: Color(0xFF007981),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 7),
-                      child: ElevatedButton(
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: Color(0xFF88F8FF)),
-                          onPressed: (() {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => UserHome(),
-                            ));
-                          }),
-                          child: Text(
-                            'Select',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                          )),
+                    child: ListView.builder(
+                      itemCount: outputList == null ? 0 : outputList.length,
+                      // itemCount: 2,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40,vertical: 5),
+                          child: InkWell(
+                            onTap: (){
+                              postdata(outputList[index]['genre_id'].toString());
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => UserHome(),
+                              ));
+                            },
+                            child: Card(
+                              color: Colors.cyan[50],
+                              shadowColor: Color(0xE688F8FF),
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0)
+                              ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          // Image.network(mainpage.url+"static/"+data[index]['pmr'].toString()),
+                                          Text(outputList[index]['genre_name'].toString(),
+                                            // style: Theme
+                                            //   .of(context)
+                                            //   .textTheme
+                                            //   .titleMedium,
+                                            style: TextStyle(
+                                                color: Color(0xFF007981),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
+                                          // Text(data[index].genre_name.toString())
+
+
+
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            backgroundColor: Color(0xFF88F8FF)),
+                                        onPressed: () {
+                                          postdata(outputList[index]['genre_id'].toString());
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context) => UserHome(),
+                                          ));
+                                        },
+                                        child: Text(
+                                          'Select',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ),
+                          ),
+                        );
+                      },
                     )
-                  ],
-                ),
-              )),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // ElevatedButton(
+              //   style: OutlinedButton.styleFrom(
+              //       backgroundColor: Color(0xFF88F8FF)),
+              //   onPressed: () {
+              //     // postdata(outputList[index]['genre_id'].toString());
+              //     Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (context) => UserHome(),
+              //     ));
+              //   },
+              //   child: Text(
+              //     'Next',
+              //     style: TextStyle(
+              //         color: Colors.black,
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 15),
+              //   ),
+              // ),
+              // Expanded(
+              //     child:
+              //     Container(
+              //       // color: Colors.teal[50],
+              //       // width: 200,
+              //       // height: 50,
+              //   padding: EdgeInsets.only(bottom: 8),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       Padding(
+              //         padding: EdgeInsets.only(left: 8, right: 8),
+              //         child: Text(
+              //           'genre',
+              //           style: TextStyle(
+              //               color: Color(0xFF007981),
+              //               fontWeight: FontWeight.bold,
+              //               fontSize: 15),
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.only(top: 8,right: 8),
+              //         child: ElevatedButton(
+              //             style: OutlinedButton.styleFrom(
+              //                 backgroundColor: Color(0xFF88F8FF)),
+              //             onPressed: (() {
+              //               Navigator.of(context).push(MaterialPageRoute(
+              //                 builder: (context) => UserHome(),
+              //               ));
+              //             }),
+              //             child: Text(
+              //               'Select',
+              //               style: TextStyle(
+              //                   color: Colors.black,
+              //                   fontWeight: FontWeight.bold,
+              //                   fontSize: 15),
+              //             )),
+              //       )
+              //     ],
+              //   ),
+              // ),
+              // ),
 
               Column(
                 children: [

@@ -3,11 +3,33 @@ import 'package:booklent/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:http/http.dart';
 
-class Passwordchange extends StatelessWidget {
+class Passwordchange extends StatefulWidget {
   const Passwordchange({super.key});
 
   @override
+  State<Passwordchange> createState() => _PasswordchangeState();
+}
+
+class _PasswordchangeState extends State<Passwordchange> {
+  // late TextEditingController email;
+
+
+  //
+  // @override
+  // void initState(){
+  //   email=TextEditingController();
+  //   super.initState();
+  // }
+  //
+  // void postdata()async {
+  //   String url="";
+  //   var resp=await post(url,body:{
+  //     "email":email.text.toString(),
+  //   });
+  // }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -78,6 +100,7 @@ class Passwordchange extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 50),
                       child: TextField(
+                        // controller: email,
                         decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),

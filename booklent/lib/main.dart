@@ -1,8 +1,5 @@
-import 'package:booklent/forgot_pw.dart';
 import 'package:booklent/login.dart';
-import 'package:booklent/signup.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -307,7 +304,7 @@ class next2 extends StatelessWidget {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Color(0x4D75F7FF),
+          color: Color(0x9988F8FF),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -445,7 +442,7 @@ class next3 extends StatelessWidget {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Color(0x4D75F7FF),
+          color: Color(0xE688F8FF),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -487,7 +484,7 @@ class next3 extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 300,
+                height: 400,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('images/pic4.png'),

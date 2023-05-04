@@ -1,8 +1,10 @@
 import 'package:booklent/genre.dart';
+import 'package:booklent/login.dart';
+import 'package:booklent/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'dart:convert';
 
 class location extends StatefulWidget {
@@ -13,16 +15,30 @@ class location extends StatefulWidget {
 }
 
 class _locationState extends State<location> {
-  // TextEditingController t1 = TextEditingController();
-
-  // final town = TextEditingController(text: '');
-  // final city = TextEditingController(text: '');
+  late TextEditingController town, city,pincode;
 
   String? location;
   bool isVisible = false;
   bool visible = false;
 
   @override
+  void initState(){
+    city=TextEditingController();
+    town =TextEditingController();
+    pincode=TextEditingController();
+    super.initState();
+  }
+
+  // void postdata()async {
+  //   String url="http://192.168.43.200:8000/location/loc/";
+  //   var resp=await post(url,body:{
+  //     "town":town.text.toString(),
+  //     "city":city.text.toString(),
+  //     "pincode":pincode.text.toString(),
+  //     "uid":signup.regid,
+  //   });
+  // }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -87,11 +103,11 @@ class _locationState extends State<location> {
                           fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 65),
+                          vertical: 5, horizontal: 65),
                       child: RadioListTile(
                         title: Text(
                           'Current location',
@@ -145,10 +161,10 @@ class _locationState extends State<location> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 50),
+                                  horizontal: 50),
                               child: TextField(
                                 decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
+                                    focusedBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(30),
                                         borderSide: BorderSide(
                                             color: Colors.transparent)),
@@ -160,15 +176,15 @@ class _locationState extends State<location> {
                                     hintText: 'Enter your town',
                                     hintStyle:
                                         TextStyle(color: Colors.grey[700])),
-                                // controller: town,
+                                controller: town,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 50),
+                                  vertical: 5, horizontal: 50),
                               child: TextField(
                                 decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
+                                    focusedBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(30),
                                         borderSide: BorderSide(
                                             color: Colors.transparent)),
@@ -180,11 +196,31 @@ class _locationState extends State<location> {
                                     hintText: 'Enter your city',
                                     hintStyle:
                                         TextStyle(color: Colors.grey[700])),
-                                // controller: city,
+                                controller: city,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 50),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent)),
+                                    labelText: 'Pincode',
+                                    labelStyle: TextStyle(
+                                        color: Color(0xFF007981),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                    hintText: 'Enter pincode',
+                                    hintStyle:
+                                    TextStyle(color: Colors.grey[700])),
+                                controller: pincode,
                               ),
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 15,
                             ),
                           ],
                         ),
@@ -196,7 +232,7 @@ class _locationState extends State<location> {
                         style: OutlinedButton.styleFrom(
                             backgroundColor: Color(0xFF88F8FF)),
                         onPressed: () {
-                          // addloc();
+                          // postdata();
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => genre(),
                           ));

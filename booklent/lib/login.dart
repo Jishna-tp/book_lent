@@ -9,24 +9,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_session/flutter_session.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
+  static var uid="";
 }
 
 class _LoginState extends State<Login> {
-  // TextEditingController t1 = TextEditingController();
-
-  // final username = TextEditingController(text: '');
-  // final password = TextEditingController(text: '');
+  late TextEditingController username, password;
 
   bool? isremember = false;
 
   @override
+
+
+  void initState(){
+    username =TextEditingController();
+    password=TextEditingController();
+    super.initState();
+  }
+  void postdata() async{
+    var url1= Uri.parse("http://192.168.43.200:8000/login/login/");
+    Response resp = await post(url1,body: {
+      "username" : username.text,
+      "password" : password.text,
+    });
+    Login.uid=resp.body;
+    late List data;
+    data=jsonDecode(resp.body);
+    if (data.length>0)
+    {
+      Login.uid=data[0]['uid'].toString();
+      if(data[0]['type']=="user")
+      {
+        print("hello");
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext) => UserHome()));
+        showDialog(context: context, builder: (context) => AlertDialog(
+            content: Text("you have successfully logged in")));
+
+      }
+      else if(data[0]['type']=="admin")
+        {
+          print("hello");
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext) => admin()));
+          showDialog(context: context, builder: (context) => AlertDialog(
+              content: Text("you have successfully logged in")));
+        }
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -117,7 +154,7 @@ class _LoginState extends State<Login> {
                                 fontSize: 15),
                             hintText: 'Enter username',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        // controller: username,
+                        controller: username,
                       ),
                     ),
                     Padding(
@@ -136,7 +173,7 @@ class _LoginState extends State<Login> {
                                 fontSize: 15),
                             hintText: 'Enter password',
                             hintStyle: TextStyle(color: Colors.grey[700])),
-                        // controller: password,
+                        controller: password,
                       ),
                     ),
                     // SizedBox(
@@ -184,10 +221,10 @@ class _LoginState extends State<Login> {
                       style: OutlinedButton.styleFrom(
                           backgroundColor: Color(0xFF88F8FF)),
                       onPressed: () {
-                        // postData(username.text, password.text);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => UserHome(),
-                        ));
+                        postdata();
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //   builder: (context) => UserHome(),
+                        // ));
                       },
                       child: Text(
                         'Login',
@@ -277,16 +314,5 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
-  }
-}
-
-class Idgen {
-  String? username;
-  String? category;
-
-  Idgen({this.username, this.category});
-
-  factory Idgen.fromJson(Map<String, dynamic> json) {
-    return Idgen(username: json['username'], category: json['category']);
   }
 }
