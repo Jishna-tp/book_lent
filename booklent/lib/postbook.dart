@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:booklent/login.dart';
 import 'package:booklent/signup.dart';
@@ -7,9 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 // import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart';
-
-
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -19,7 +19,7 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
-  late TextEditingController bookname,authorname,bio;
+  late TextEditingController bookname, authorname, bio;
   // var objfile,fil,photo;
   // file_up() async {
   //   print('added successfully');
@@ -37,35 +37,44 @@ class _PostState extends State<Post> {
   // }
 
   @override
-
-  void initState(){
-    bookname=TextEditingController();
-    authorname =TextEditingController();
-    bio=TextEditingController();
+  void initState() {
+    bookname = TextEditingController();
+    authorname = TextEditingController();
+    bio = TextEditingController();
     super.initState();
   }
 
-  void postdata()async {
-    String url="http://192.168.43.200:8000/userpost/books/";
-    var resp=await post(url,body:{
-      "book_name":bookname.text.toString(),
-      "author_name":authorname.text.toString(),
-      "bio":bio.text.toString(),
-      "genid":choosevalue,
-      "uid":Login.uid
+  void postdata() async {
+    print("testing");
+    String url = "http://192.168.43.200:8000/userpost/books/";
+    var resp = await post(url, body: {
+      "book_name": bookname.text.toString(),
+      "author_name": authorname.text.toString(),
+      "bio": bio.text.toString(),
+      "genid": choosevalue,
+      "uid": Login.uid
     });
     print(Login.uid);
   }
-  String choosevalue="";
+
+  String choosevalue = "";
   late List data;
   void List_function() async {
     var url = Uri.parse("http://192.168.43.200:8000/genre/genview/");
     Response resp1 = await get(url);
     data = jsonDecode(resp1.body);
-    setState(() {
-
-    });
+    setState(() {});
     print(resp1.body);
+  }
+
+  File? file;
+  ImagePicker image = ImagePicker();
+  getcam() async {
+    // ignore: deprecated_member_use
+    var img = await image.getImage(source: ImageSource.camera);
+    setState(() {
+      file = File(img.path);
+    });
   }
 
   Widget build(BuildContext context) {
@@ -103,14 +112,13 @@ class _PostState extends State<Post> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20, horizontal: 50),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
                 child: TextField(
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide:
-                          BorderSide(color: Colors.transparent)),
+                          borderSide: BorderSide(color: Colors.transparent)),
                       labelText: 'Name of Book',
                       labelStyle: TextStyle(
                           color: Color(0xFF007981),
@@ -122,14 +130,13 @@ class _PostState extends State<Post> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10, horizontal: 50),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
                 child: TextField(
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide:
-                          BorderSide(color: Colors.transparent)),
+                          borderSide: BorderSide(color: Colors.transparent)),
                       labelText: 'Author name',
                       labelStyle: TextStyle(
                           color: Color(0xFF007981),
@@ -141,10 +148,9 @@ class _PostState extends State<Post> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10, horizontal: 50),
-                child:
-                DropdownButtonFormField(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                child: DropdownButtonFormField(
                   value: choosevalue.isNotEmpty ? choosevalue : null,
                   onChanged: (newvalue) {
                     setState(() {
@@ -153,9 +159,9 @@ class _PostState extends State<Post> {
                   },
                   items: data
                       .map((e) => DropdownMenuItem(
-                    child: Text(e['genre_name'].toString()),
-                    value: e['genre_id'].toString(),
-                  ))
+                            child: Text(e['genre_name'].toString()),
+                            value: e['genre_id'].toString(),
+                          ))
                       .toList(),
                   icon: Icon(
                     Icons.arrow_drop_down,
@@ -166,18 +172,19 @@ class _PostState extends State<Post> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 10,
               ),
               Text(
                 "Bio",
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.left,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 50),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: TextField(
@@ -187,7 +194,43 @@ class _PostState extends State<Post> {
                   ),
                 ),
               ),
-
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 250,
+                    width: 200,
+                    color: Colors.black12,
+                    child: file == null
+                        ? Icon(
+                            Icons.image,
+                            size: 50,
+                          )
+                        : Image.file(
+                            file!,
+                            fit: BoxFit.fill,
+                          ),
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      getcam();
+                    },
+                    color: Colors.amber[100],
+                    child: Row(
+                      children: [
+                        Icon(Icons.camera),
+                        Text(
+                          'Take a picture',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               // Container(
               //   padding: EdgeInsets.symmetric(vertical: 1.0),
               //   width: double.infinity,
@@ -215,15 +258,17 @@ class _PostState extends State<Post> {
               //   ),
               // ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               ElevatedButton(
                 style: OutlinedButton.styleFrom(
                     backgroundColor: Color(0xFF88F8FF)),
                 onPressed: () {
                   postdata();
-                  showDialog(context: context, builder: (context) => AlertDialog(
-                      content: Text("Added successfully.")));
+                  showDialog(
+                      context: context,
+                      builder: (context) =>
+                          AlertDialog(content: Text("Added successfully.")));
                   Post();
                 },
                 child: Text(
@@ -233,6 +278,9 @@ class _PostState extends State<Post> {
                       fontWeight: FontWeight.bold,
                       fontSize: 15),
                 ),
+              ),
+              SizedBox(
+                height: 20,
               ),
             ],
           ),

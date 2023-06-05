@@ -23,7 +23,7 @@ class _homeState extends State<home> {
 
   @override
 
-  late List data;
+  late List data,datas;
   void List_user() async {
     var url = Uri.parse("http://192.168.43.200:8000/register/usereg/");
     Response resp1 = await get(url);
@@ -31,11 +31,20 @@ class _homeState extends State<home> {
     this.setState(() {
 
     });
+  }
+  // late List datas;
+  void List_books() async {
+    var url = Uri.parse("http://192.168.43.200:8000/userpost/gbks/");
+    Response resp1 = await post(url,body: {'uid':Login.uid});
+
+    this.setState(() {
+      datas = jsonDecode(resp1.body);
+    });
     print(resp1.body);
   }
-
   Widget build(BuildContext context) {
     List_user();
+    List_books();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -181,313 +190,109 @@ class _homeState extends State<home> {
             Expanded(
               child: Container(
                 margin: EdgeInsets.all(10),
-                child: ListView(
+                child: ListView.builder(
                   scrollDirection: Axis.vertical,
+    itemCount: datas == null ? 0 : datas.length,
+    // itemCount: 2,
+    itemBuilder: (context, index) {
+      return Padding(padding: EdgeInsets.all(0),
+
+        child: InkWell(
+          onTap: () {
+
+          },
+          child: Card(
+            color: Colors.cyan[50],
+            shadowColor: Color(0xE688F8FF),
+            elevation: 10,
+            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+            child: Container(
+                height: 175,
+                // width: 300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InkWell(
-                      onTap: (){
-
-                      },
-                      child: Card(
-                        color: Colors.cyan[50],
-                        shadowColor: Color(0xE688F8FF),
-                        elevation: 10,
-                        margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                        child: Container(
-                            height: 175,
-                            // width: 300,
-                            child: Row(
-                              children: [
-                                Image(
-                                  image: AssetImage('images/logo3.png'),
-                                  width: 200,
-                                  height: 200,
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      'Book Name',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 20),
-                                    ),
-                                    Text(
-                                      'Auther Name',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          Icons.location_on,
-                                          color: Colors.green[800],
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'location',
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Icon(
-                                    //       Icons.swap_horiz_rounded,
-                                    //       color: Colors.green[800],
-                                    //       size: 40,
-                                    //     ),
-                                    //     SizedBox(
-                                    //       width: 50,
-                                    //     ),
-                                    //     Icon(
-                                    //       Icons.attach_money_outlined,
-                                    //       color: Colors.green[800],
-                                    //       size: 30,
-                                    //     )
-                                    //   ],
-                                    // ),
-                                  ],
-                                ),
-                              ],
-                            )),
-                      ),
+                    Container(
+                      width: 100,
+                      height: 150,
+                      color: Colors.lightGreen,
+                      // child: Image(
+                      //   image: AssetImage('images/logo3.png'),
+                      //
+                      // ),
                     ),
-                    Card(
-                      color: Colors.cyan[50],
-                      shadowColor: Color(0xE688F8FF),
-                      elevation: 10,
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      child: Container(
-                          height: 175,
-                          // width: 300,
-                          child: Row(
-                            children: [
-                              Image(
-                                image: AssetImage('images/logo3.png'),
-                                width: 200,
-                                height: 200,
-                              ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Book Name',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 20),
-                                  ),
-                                  Text(
-                                    'Auther Name',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: Colors.green[800],
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'location',
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Icon(
-                                  //       Icons.swap_horiz_rounded,
-                                  //       color: Colors.green[800],
-                                  //       size: 40,
-                                  //     ),
-                                  //     SizedBox(
-                                  //       width: 50,
-                                  //     ),
-                                  //     Icon(
-                                  //       Icons.attach_money_outlined,
-                                  //       color: Colors.green[800],
-                                  //       size: 30,
-                                  //     )
-                                  //   ],
-                                  // )
-                                ],
-                              ),
-                            ],
-                          )),
-                    ),
-                    Card(
-                      color: Colors.cyan[50],
-                      shadowColor: Color(0xE688F8FF),
-                      elevation: 10,
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      child: Container(
-                          height: 175,
-                          // width: 200,
-                          child: Row(
-                            children: [
-                              Image(
-                                image: AssetImage('images/logo3.png'),
-                                width: 200,
-                                height: 200,
-                              ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Book Name',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 20),
-                                  ),
-                                  Text(
-                                    'Auther Name',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: Colors.green[800],
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'location',
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Icon(
-                                  //       Icons.swap_horiz_rounded,
-                                  //       color: Colors.green[800],
-                                  //       size: 40,
-                                  //     ),
-                                  //     SizedBox(
-                                  //       width: 50,
-                                  //     ),
-                                  //     Icon(
-                                  //       Icons.attach_money_outlined,
-                                  //       color: Colors.green[800],
-                                  //       size: 30,
-                                  //     )
-                                  //   ],
-                                  // )
-                                ],
-                              ),
-                            ],
-                          )),
-                    ),
-                    Card(
-                      color: Colors.cyan[50],
-                      shadowColor: Color(0xE688F8FF),
-                      elevation: 10,
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      child: Container(
-                          height: 175,
-                          // width: 200,
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Image(
-                                image: AssetImage('images/logo3.png'),
-                                width: 200,
-                                height: 200,
-                              ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Book Name',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 20),
-                                  ),
-                                  Text(
-                                    'Auther Name',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: Colors.green[800],
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'location',
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Icon(
-                                  //       Icons.swap_horiz_rounded,
-                                  //       color: Colors.green[800],
-                                  //       size: 40,
-                                  //     ),
-                                  //     SizedBox(
-                                  //       width: 50,
-                                  //     ),
-                                  //     Icon(
-                                  //       Icons.attach_money_outlined,
-                                  //       color: Colors.green[800],
-                                  //       size: 30,
-                                  //     )
-                                  //   ],
-                                  // )
-                                ],
-                              ),
-                            ],
-                          )),
+                    Column(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                    datas[index]['book_name'].toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15),
+                        ),
+                        Text(
+                            datas[index]['author_name'].toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14),
+                        ),
+                        Text(
+                          datas[index]['gen_id'].toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14),
+                        ),
+                        Row(
+                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.green[800],
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'location',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        // Row(
+                        //   mainAxisAlignment:
+                        //       MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Icon(
+                        //       Icons.swap_horiz_rounded,
+                        //       color: Colors.green[800],
+                        //       size: 40,
+                        //     ),
+                        //     SizedBox(
+                        //       width: 50,
+                        //     ),
+                        //     Icon(
+                        //       Icons.attach_money_outlined,
+                        //       color: Colors.green[800],
+                        //       size: 30,
+                        //     )
+                        //   ],
+                        // ),
+                      ],
                     ),
                   ],
-                ),
+                )),
+          ),
+        ),
+      );
+    },
               ),
             ),
-          ],
         ),
+  ]
       ),
-    );
+
+    ));
   }
 }
 

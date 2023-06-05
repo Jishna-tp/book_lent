@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
     data=jsonDecode(resp.body);
     if (data.length>0)
     {
-      Login.uid=data[0]['uid'].toString();
+      Login.uid=data[0]['u_id'].toString();
       if(data[0]['type']=="user")
       {
         print("hello");

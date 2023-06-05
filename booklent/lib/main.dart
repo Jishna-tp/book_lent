@@ -2,8 +2,16 @@ import 'package:booklent/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'genre.dart';
+
 void main() {
   runApp(MyApp());
+  // runApp(MaterialApp(
+  //   routes: {
+  //     '/':(Context)=> genre(),
+  //   },
+  // ));
+
 }
 
 class MyApp extends StatelessWidget {
