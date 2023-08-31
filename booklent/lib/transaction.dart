@@ -1,13 +1,34 @@
 import 'package:booklent/home.dart';
+import 'package:booklent/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
-class MyTransactionPage extends StatelessWidget {
-  const MyTransactionPage({super.key});
+class transcation extends StatefulWidget {
+  const transcation({super.key});
+
+  @override
+  State<transcation> createState() => _transcationState();
+}
+
+class _transcationState extends State<transcation> {
+  late List data;
+  void List_books() async {
+    var url = Uri.parse(Login.url+"trans/vwtrans/");
+    Response resp1 = await get(url);
+    this.setState(() {
+      data = jsonDecode(resp1.body);
+      // len=data.length;
+    });
+    // this.setState(()
+    // });
+    print(resp1.body);
+  }
 
   @override
   Widget build(BuildContext context) {
+    List_books();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -24,7 +45,7 @@ class MyTransactionPage extends StatelessWidget {
         shadowColor: Colors.transparent,
         title: Center(
           child: Text(
-            'My Transactions',
+            'Transcation',
             style: TextStyle(
                 color: Color.fromARGB(240, 0, 120, 129),
                 fontSize: 30,
@@ -35,7 +56,63 @@ class MyTransactionPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Color.fromARGB(240, 0, 120, 129)),
       ),
       body: Center(
-        child: Text('My Transaction'),
+          child: new ListView.builder(
+            itemCount: data == null ? 0 : data.length,
+            // itemCount: 2,
+            itemBuilder: (context, index) {
+              return new Padding(
+                padding: new EdgeInsets.fromLTRB(20, 05, 10, 5),
+                child: new Card(
+                  elevation: 2.0,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(16.0)
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      print("tapped");
+                      //  tap funtion here
+
+                    },
+                    child: new Column(
+                      children: <Widget>[
+                        new Padding(
+                          padding: new EdgeInsets.all(16.0),
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              // Image.network("http://192.168.1.44:8000/static/"+data[index]['image'].toString()),
+                              new Text("Book name:"+" "+data[index]['book'].toString(), style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleMedium,
+                              ),
+                              new SizedBox(height: 6.0),
+                              //
+                              // new Text(('Rent date:' ).toUpperCase()+" "+data[index]['date'].toString(), style: Theme
+                              //     .of(context)
+                              //     .textTheme
+                              //     .titleMedium
+                              // ),
+                              // new SizedBox(height: 6.0),
+                              //
+
+                              // new SizedBox(height: 6.0),
+                              // new Text(('Status:' ).toUpperCase()+" "+data[index]['status'].toString(), style: Theme
+                              //     .of(context)
+                              //     .textTheme
+                              //     .titleMedium
+                              // ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          )
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:booklent/home.dart';
+import 'package:booklent/imgrecog.dart';
 import 'package:booklent/login.dart';
 import 'package:booklent/signup.dart';
 import 'package:booklent/user.dart';
@@ -28,7 +29,7 @@ class _genreState extends State<genre> {
   bool isSearching = false;
 
   void List_function() async {
-    var url = Uri.parse("http://192.168.43.200:8000/genre/genview/");
+    var url = Uri.parse(Login.url+"genre/genview/");
     Response resp1 = await get(url);
     // data = jsonDecode(resp1.body);
     setState(() {
@@ -46,7 +47,7 @@ class _genreState extends State<genre> {
   }
   void postdata()async {
     print('helloooo');
-    String url="http://192.168.43.200:8000/genreselect/selectgen/";
+    String url=Login.url+"genreselect/selectgen/";
     for(var o in jselected) {
       // print(o);
       var resp = await post(url, body: {
@@ -198,7 +199,7 @@ class _genreState extends State<genre> {
                             onTap: (){
                               // postdata();
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => UserHome(),
+                                builder: (context) => logscan(),
                               ));
                             },
                             child: Card(
@@ -296,7 +297,7 @@ class _genreState extends State<genre> {
                   postdata();
                   print('asdf');
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UserHome(),
+                    builder: (context) => logscan(),
                   ));
                 },
                 child: Text(

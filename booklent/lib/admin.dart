@@ -1,19 +1,21 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
+import 'package:booklent/post_noti_admin.dart';
+import 'package:booklent/view_trans_admin.dart';
+import 'package:booklent/view_users.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:http/http.dart';
+// import 'package:blind/layout/login.dart';
+
+import 'login.dart';
+// import 'package:fraudtrans/layouts/viewplot.dart';
+
+//drawer: draw()
+//import 'package:controlsapp/custcontrols/draw.dart';
 
 class admin extends StatelessWidget {
-  admin({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: 70,
         automaticallyImplyLeading: false,
         shadowColor: Colors.transparent,
         title: Center(
@@ -27,74 +29,90 @@ class admin extends StatelessWidget {
         ),
         backgroundColor: Color(0xE688F8FF),
         elevation: 5.0,
-        leading: Icon(
-          Icons.menu,
-          size: 35,
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Icon(
-              Icons.search,
-              size: 30.0,
-            ),
-          ),
-        ],
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext) => admindraw()));
+            },
+            icon: Icon(
+              Icons.menu,
+              size: 40,
+            )),
+
         iconTheme: IconThemeData(color: Color.fromARGB(240, 0, 120, 129)),
       ),
       backgroundColor: Colors.cyan[50],
-      // body: Container(
-      //     child:
-      //         //   // future: viewUser(),
-      //         //   // builder: (context, data) {
-      //         //   //   if (data.hasError) {
-      //         //   //     return Center(child: Text("${data.error}"));
-      //         //   //   } else if (data.hasData) {
-      //         //   //     var items = data.data as List<User>;
-      //         //   //     return ListView.builder(
-      //         //   //         itemCount: items == null ? 0 : items.length,
-      //         //   //         itemBuilder: (context, index) {
-      //         //   //           return Card(
-      //         //   //             color: Colors.cyan[50],
-      //         //   //             shadowColor: Color(0xE688F8FF),
-      //         //   //             elevation: 10,
-      //         //   //             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      //         //   //             child: Container(
-      //         //   //               padding: EdgeInsets.all(8),
-      //         //   //               child: Row(
-      //         //   //                 mainAxisAlignment: MainAxisAlignment.center,
-      //         //   //                 crossAxisAlignment: CrossAxisAlignment.center,
-      //         //   //                 children: [
-      //         Expanded(
-      //             child: Container(
-      //   padding: EdgeInsets.only(bottom: 8),
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: [
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 8, right: 8),
-      //         child: Text(
-      //           'Name',
-      //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 8, right: 8),
-      //         // child: Text(items[index].username.toString()),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 8, right: 8),
-      //         // child: Text(items[index].phone.toString()),
-      //       ),
-      //       Padding(
-      //         padding: EdgeInsets.only(left: 8, right: 8),
-      //         // child: Text(items[index].email.toString()),
-      //       ),
-      //     ],
-      //   ),
-      // ))
-      //     ),
+    );
+
+  }
+}
+
+class admindraw extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: Colors.cyan[50],
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Image(
+                image: AssetImage('images/logo3.png'),
+                width: 200,
+                height: 200,
+              ),
+              // decoration: BoxDecoration(
+              //   color: Color(0xE688F8FF),
+              // ),
+            ),
+            ListTile(
+              leading: Icon(Icons.book_outlined),
+              title: Text('View users'),
+              onTap: (){
+                // Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext) => vusers()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.apartment_sharp),
+              title: Text('Post Notification'),
+              onTap: (){
+                // Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext) => post_noti_admin()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.book_outlined),
+              title: Text('View transcation'),
+              onTap: (){
+                // Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext) => vtens_admin()));
+              },
+            ),
+
+            // ListTile(
+            //   leading: Icon(Icons.supervised_user_circle),
+            //   title: Text('Rate doctor'),
+            //   onTap: (){
+            //     Navigator.pop(context);
+            //     Navigator.pushNamed(context, '/rate');
+            //   },
+            // ),
+            ListTile(
+              leading: Icon(Icons.login_outlined),
+              title: Text('Logout'),
+              onTap: (){
+                // Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => Login()));
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

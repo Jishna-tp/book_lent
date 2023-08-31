@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:booklent/genre.dart';
 import 'package:booklent/location.dart';
 import 'package:booklent/login.dart';
+import 'package:booklent/nwloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -20,9 +21,21 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  late TextEditingController username,gender,age,interest,phone,email,password;
+  late TextEditingController username,gender,dob,interest,phone,email,password,age;
   String? location;
   bool isVisible = true;
+  bool validateEmail(String value) {
+    var email = value;
+    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    print(emailValid);
+    return emailValid;
+  }
+  bool validatephone(String value){
+    var ph=value;
+    bool phone=RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(ph);
+    return phone;
+
+  }
 
   @override
 
@@ -30,6 +43,7 @@ class _signupState extends State<signup> {
 
     username =TextEditingController();
     gender=TextEditingController();
+    dob=TextEditingController();
     age=TextEditingController();
     interest=TextEditingController();
     phone=TextEditingController();
@@ -39,39 +53,80 @@ class _signupState extends State<signup> {
     // town=TextEditingController();
     // city=TextEditingController();
     // pincode=TextEditingController();
+
     super.initState();
+    mapviewnear();
   }
 
   void postdata()async {
-    String url="http://192.168.43.200:8000/register/usereg/";
-    var resp=await post(url,body:{
-    "username":username.text.toString(),
-    "gender":gender.text.toString(),
-      "age":age.text.toString(),
-      "interest":interest.text.toString(),
-    "phone_no":phone.text.toString(),
-    "email":email.text.toString(),
-    "password":password.text.toString(),
-
-      // "town":town.text.toString(),
-      // "city":city.text.toString(),
-      // "pincode":pincode.text.toString(),
-      // "genid":choosevalue
-    });
-    signup.regid=resp.body;
-    print(signup.regid);
-    print(resp.body);
+    String url=Login.url+"register/usereg/";
+    if(username.text=="")
+      {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Required Name")));
+      }
+    else if(gender.text=="")
+      {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Required gender")));
+      }
+    else if(dob.text=="")
+      {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Required Dob")));
+      }
+    else if(interest.text=="")
+      {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Required Interest")));
+      }
+    else if(!validatephone(phone.text))
+      {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Required Phone")));
+      }
+    else if(!validateEmail(email.text))
+      {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Required email")));
+      }
+    else if(password=="")
+      {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Required Password")));
+      }
+    else{
+      var resp=await post(url,body:{
+        "username":username.text.toString(),
+        "gender":gender.text.toString(),
+        "age":age.text.toString(),
+        "interest":interest.text.toString(),
+        "phone_no":phone.text.toString(),
+        "email":email.text.toString(),
+        "password":password.text.toString(),
+      });
+      signup.regid=resp.body;
+      // print(signup.regid);
+      // print(resp.body);
+    }
   }
   String choosevalue="";
   late List data;
   void List_function() async {
-    var url = Uri.parse("http://192.168.43.200:8000/genre/genview/");
+    var url = Uri.parse(Login.url+"genre/genview/");
     Response resp1 = await get(url);
     data = jsonDecode(resp1.body);
     setState(() {
 
     });
     print(resp1.body);
+  }
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1850, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        dob.text = "${selectedDate.toLocal()}".split(' ')[0];
+        age.text = calculateAge(selectedDate);
+      });
   }
   // void postloc()async {
   //   String url="http://192.168.43.200:8000/location/loc/";
@@ -82,6 +137,25 @@ class _signupState extends State<signup> {
   //     "uid":signup.regid,
   //   });
   // }
+  // String age = '';
+  String calculateAge(DateTime selectedDate) {
+    // String date = dob.text;
+    final currentDate = DateTime.now();
+    // DateTime birthDate = DateTime.parse();
+
+
+    int years = currentDate.year - selectedDate.year;
+    int months = currentDate.month - selectedDate.month;
+    int days = currentDate.day - selectedDate.day;
+
+    if (months < 0 || (months == 0 && days < 0)) {
+      years--;
+    }
+    print(years);
+    return years.toString();
+
+  }
+
 
   Widget build(BuildContext context) {
     List_function();
@@ -200,22 +274,43 @@ class _signupState extends State<signup> {
                             controller: gender,
                           ),
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 50),
+                        //   child: TextField(
+                        //     decoration: InputDecoration(
+                        //         focusedBorder: UnderlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(30),
+                        //             borderSide:
+                        //             BorderSide(color: Colors.transparent)),
+                        //         labelText: 'Age',
+                        //         labelStyle: TextStyle(
+                        //             color: Color(0xFF007981),
+                        //             fontWeight: FontWeight.bold,
+                        //             fontSize: 15),
+                        //         hintText: 'Enter age',
+                        //         hintStyle: TextStyle(color: Colors.grey[700])),
+                        //     controller: age,
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 50),
-                          child: TextField(
+                          child: TextFormField(
+                            controller: dob,
+                            showCursor: true,
+                            readOnly: true,
                             decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                    borderSide:
-                                    BorderSide(color: Colors.transparent)),
-                                labelText: 'Age',
-                                labelStyle: TextStyle(
-                                    color: Color(0xFF007981),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                                hintText: 'Enter age',
-                                hintStyle: TextStyle(color: Colors.grey[700])),
-                            controller: age,
+                              labelText: 'Date of Birth',
+                              hintText: 'date ',
+                              prefixIcon: Icon(Icons.date_range),
+                              // border: OutlineInputBorder(
+                              //     borderRadius: BorderRadius.circular(30)
+                              // )
+                            ),
+                            onTap: (){
+                              setState(() {
+                                _selectDate(context);
+                              });
+                            },
                           ),
                         ),
                         Padding(
@@ -383,34 +478,35 @@ class _signupState extends State<signup> {
                         //     ),
                         //   ),
                         // ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 65),
-                          child: RadioListTile(
-                            title: Text(
-                              'Current location',
-                              style: TextStyle(color: Color(0xFF007981)),
-                            ),
-                            activeColor: Color(0xE610F1FF),
-                            value: 'current',
-                            groupValue: location,
-                            onChanged: (String? value) {
-                              setState(() {
-                                location = value;
-                                if (location == value) {
-                                  // setState(() {
-                                  //   isVisible = true;
-                                  // });
-                                }
-                                // else{
-                                //   setState(() {
-                                //     isVisible = true;
-                                //   });
-                                // }
-                              });
-                            },
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 65),
+                        //   child: RadioListTile(
+                        //     title: Text(
+                        //       'Current location',
+                        //       style: TextStyle(color: Color(0xFF007981)),
+                        //     ),
+                        //     activeColor: Color(0xE610F1FF),
+                        //     value: 'current',
+                        //     groupValue: location,
+                        //     onChanged: (String? value) {
+                        //       // mapviewnear();
+                        //       setState(() {
+                        //         location = value;
+                        //         if (location == value) {
+                        //           // setState(() {
+                        //           //   isVisible = true;
+                        //           // });
+                        //         }
+                        //         // else{
+                        //         //   setState(() {
+                        //         //     isVisible = true;
+                        //         //   });
+                        //         // }
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
                         // Padding(
                         //   padding: const EdgeInsets.symmetric(
                         //       horizontal: 50),
@@ -445,7 +541,7 @@ class _signupState extends State<signup> {
                           onPressed: () {
                             postdata();
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => genre(),
+                              builder: (context) => mapviewnear(),
                             ));
                           },
                           child: Text(

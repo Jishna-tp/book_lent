@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 // import 'package:file_picker/file_picker.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart';
+import 'package:file_picker/file_picker.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -19,7 +20,7 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
-  late TextEditingController bookname, authorname, bio;
+  late TextEditingController bookname, authorname, bio, img;
   // var objfile,fil,photo;
   // file_up() async {
   //   print('added successfully');
@@ -35,46 +36,70 @@ class _PostState extends State<Post> {
   //     // User canceled the picker
   //   }
   // }
-
-  @override
-  void initState() {
-    bookname = TextEditingController();
-    authorname = TextEditingController();
-    bio = TextEditingController();
-    super.initState();
-  }
-
-  void postdata() async {
-    print("testing");
-    String url = "http://192.168.43.200:8000/userpost/books/";
-    var resp = await post(url, body: {
-      "book_name": bookname.text.toString(),
-      "author_name": authorname.text.toString(),
-      "bio": bio.text.toString(),
-      "genid": choosevalue,
-      "uid": Login.uid
-    });
-    print(Login.uid);
-  }
-
   String choosevalue = "";
   late List data;
   void List_function() async {
-    var url = Uri.parse("http://192.168.43.200:8000/genre/genview/");
+    var url = Uri.parse(Login.url + "genre/genview/");
     Response resp1 = await get(url);
     data = jsonDecode(resp1.body);
     setState(() {});
     print(resp1.body);
   }
 
-  File? file;
-  ImagePicker image = ImagePicker();
-  getcam() async {
-    // ignore: deprecated_member_use
-    var img = await image.getImage(source: ImageSource.camera);
-    setState(() {
-      file = File(img.path);
+  @override
+  void initState() {
+    bookname = TextEditingController();
+    authorname = TextEditingController();
+    bio = TextEditingController();
+    img = TextEditingController();
+    super.initState();
+  }
+
+  void postdata() async {
+    print("testing");
+    String url = Login.url + "userpost/books/";
+    var resp = await post(url, body: {
+      "book_name": bookname.text.toString(),
+      "author_name": authorname.text.toString(),
+      "bio": bio.text.toString(),
+      "genid": choosevalue.toString(),
+      "uid": Login.uid,
+      "file": img.toString()
     });
+    final request =
+        MultipartRequest("POST", Uri.parse(Login.url + "userpost/up/"));
+    request.fields["id"] = "bus";
+    request.files.add(MultipartFile("file", objfile.readStream, objfile.size,
+        filename: objfile.name));
+    var resp1 = await request.send();
+    final respStr = await resp1.stream.bytesToString();
+    print(Login.uid);
+    print(choosevalue);
+  }
+
+  // File? file;
+  // ImagePicker image = ImagePicker();
+  // getcam() async {
+  //   // ignore: deprecated_member_use
+  //   var img = await image.getImage(source: ImageSource.camera);
+  //   setState(() {
+  //     file = File(img.path);
+  //   });
+  // }
+  var fil, objfile;
+  file_up() async {
+    print('added successfully');
+    var result = await FilePicker.platform.pickFiles(withReadStream: true);
+    if (result != null) {
+      // var fil=result.files.single.path;
+      setState(() {
+        fil = result.files.first.name;
+        objfile = result.files.single;
+        img.text = fil;
+      });
+    } else {
+      // User canceled the picker
+    }
   }
 
   Widget build(BuildContext context) {
@@ -115,6 +140,7 @@ class _PostState extends State<Post> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
                 child: TextField(
+                  controller: bookname,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -126,13 +152,13 @@ class _PostState extends State<Post> {
                           fontSize: 18),
                       hintText: 'Enter book name',
                       hintStyle: TextStyle(color: Colors.grey[700])),
-                  controller: bookname,
                 ),
               ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
                 child: TextField(
+                  controller: authorname,
                   decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -144,7 +170,6 @@ class _PostState extends State<Post> {
                           fontSize: 18),
                       hintText: 'Enter Author name',
                       hintStyle: TextStyle(color: Colors.grey[700])),
-                  controller: authorname,
                 ),
               ),
               Padding(
@@ -188,9 +213,9 @@ class _PostState extends State<Post> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: TextField(
+                    controller: bio,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
-                    controller: bio,
                   ),
                 ),
               ),
@@ -201,34 +226,60 @@ class _PostState extends State<Post> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    height: 250,
-                    width: 200,
-                    color: Colors.black12,
-                    child: file == null
-                        ? Icon(
-                            Icons.image,
-                            size: 50,
-                          )
-                        : Image.file(
-                            file!,
-                            fit: BoxFit.fill,
-                          ),
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      getcam();
-                    },
-                    color: Colors.amber[100],
-                    child: Row(
-                      children: [
-                        Icon(Icons.camera),
-                        Text(
-                          'Take a picture',
-                          style: TextStyle(color: Colors.black),
+                    padding: EdgeInsets.symmetric(vertical: 1.0),
+                    // width: 50,
+                    child: ElevatedButton(
+                      // elevation: 5.0,
+                      onPressed: () {
+                        file_up();
+                      },
+                      // padding: EdgeInsets.fromLTRB(90, 0, 90, 0),
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.only(bottomRight:Radius.circular(10) , topRight: Radius.circular(10),topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                      //   //borderRadius: BorderRadius.only()
+                      // ),
+                      // color: Colors.white,
+                      child: Text(
+                        'pick one photo ',
+                        style: TextStyle(
+                          color: Color(0xFF072850),
+                          letterSpacing: 1.5,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OpenSans',
                         ),
-                      ],
+                      ),
                     ),
                   ),
+                  // Container(
+                  //   height: 250,
+                  //   width: 200,
+                  //   color: Colors.black12,
+                  //   child: file == null
+                  //       ? Icon(
+                  //           Icons.image,
+                  //           size: 50,
+                  //         )
+                  //       : Image.file(
+                  //           file!,
+                  //           fit: BoxFit.fill,
+                  //         ),
+                  // ),
+                  // MaterialButton(
+                  //   onPressed: () {
+                  //     getcam();
+                  //   },
+                  //   color: Colors.amber[100],
+                  //   child: Row(
+                  //     children: [
+                  //       Icon(Icons.camera),
+                  //       Text(
+                  //         'Take a picture',
+                  //         style: TextStyle(color: Colors.black),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
               // Container(
@@ -269,7 +320,7 @@ class _PostState extends State<Post> {
                       context: context,
                       builder: (context) =>
                           AlertDialog(content: Text("Added successfully.")));
-                  Post();
+                  // Post();
                 },
                 child: Text(
                   'Post',

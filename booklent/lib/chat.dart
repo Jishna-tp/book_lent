@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class chat extends StatefulWidget {
-  const chat({super.key});
+  const chat({Key? key}) : super(key: key);
 
   @override
   State<chat> createState() => _chatState();

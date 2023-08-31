@@ -1,12 +1,18 @@
 import 'dart:convert';
 
 import 'package:booklent/approved.dart';
+import 'package:booklent/editpro.dart';
+import 'package:booklent/exch_req_form.dart';
+import 'package:booklent/exchangereq.dart';
 import 'package:booklent/login.dart';
 import 'package:booklent/mybooks.dart';
 import 'package:booklent/postbook.dart';
+import 'package:booklent/predict.dart';
+import 'package:booklent/rent_req_form.dart';
 import 'package:booklent/request.dart';
 import 'package:booklent/transaction.dart';
 import 'package:booklent/user.dart';
+import 'package:booklent/view_app_exchange_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -23,28 +29,71 @@ class _homeState extends State<home> {
 
   @override
 
-  late List data,datas;
+  late List data,datas,outputList;
   void List_user() async {
-    var url = Uri.parse("http://192.168.43.200:8000/register/usereg/");
+    var url = Uri.parse(Login.url+"register/usereg/");
     Response resp1 = await get(url);
     data = jsonDecode(resp1.body);
     this.setState(() {
-
     });
   }
+  // late List outputList;
+  var len=0;
+  late TextEditingController filt;
+  bool isSearching = false,isFavourite = true;
+  var ischeck = [] ;
   // late List datas;
   void List_books() async {
-    var url = Uri.parse("http://192.168.43.200:8000/userpost/gbks/");
-    Response resp1 = await post(url,body: {'uid':Login.uid});
+    var url = Uri.parse(Login.url+"userpost/srch/");
+    Response resp1 = await post(url,body: {
+      "uid":Login.uid
+    });
+    // Response resp1 = await post(url,body: {'uid':Login.uid});
 
     this.setState(() {
       datas = jsonDecode(resp1.body);
+      outputList = datas;
+      len = outputList.length;
+      print(len);
     });
-    print(resp1.body);
+    // print(resp1.body);
+
+  }
+  @override
+  void initState() {
+    List_books();
+    filt = TextEditingController();
+  }
+
+  void postdata(bidd)async {
+    String url=Login.url+"favoritr/fav/";
+    var resp=await post(url,body:{
+      "uid":Login.uid,
+      "bid":bidd.toString()
+    });
+  }
+
+
+  void rent(bidd,rcid)async {
+    String url=Login.url+"chat/rntcht/";
+    var resp=await post(url,body:{
+      "uid":Login.uid,
+      "bid":bidd.toString(),
+      "rcid":rcid.toString()
+    });
+  }
+
+  void excng(bidd,rcid)async {
+    String url=Login.url+"chat/chtexch/";
+    var resp=await post(url,body:{
+      "uid":Login.uid,
+      "bid":bidd.toString(),
+      "rcid":rcid.toString()
+    });
   }
   Widget build(BuildContext context) {
     List_user();
-    List_books();
+    // List_books();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -74,7 +123,10 @@ class _homeState extends State<home> {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext) => editpro()));
+              },
               icon: Icon(
                 Icons.account_circle,
                 size: 35,
@@ -95,7 +147,22 @@ class _homeState extends State<home> {
               padding: const EdgeInsets.symmetric(
                   vertical: 10, horizontal: 20),
               child: TextField(
-                onChanged: (value) => onSearch(value),
+                controller: filt,
+                onChanged: (data1) {
+                  if (data1 != "") {
+                    setState(() {
+                      outputList =
+                          datas.where((o) => o['book_name'].contains(data1)).toList();
+                      // outputList = data.where((o) => o['name']==data1).toList();
+                    });
+                  } else {
+                    setState(() {
+                      outputList = datas;
+                    });
+                  }
+                },
+
+                // onChanged: (value) => onSearch(value),
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
                         vertical: 10, horizontal: 30),
@@ -192,7 +259,7 @@ class _homeState extends State<home> {
                 margin: EdgeInsets.all(10),
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
-    itemCount: datas == null ? 0 : datas.length,
+    itemCount: outputList == null ? 0 : outputList.length,
     // itemCount: 2,
     itemBuilder: (context, index) {
       return Padding(padding: EdgeInsets.all(0),
@@ -216,33 +283,54 @@ class _homeState extends State<home> {
                       width: 100,
                       height: 150,
                       color: Colors.lightGreen,
-                      // child: Image(
-                      //   image: AssetImage('images/logo3.png'),
-                      //
-                      // ),
+                      child: Image.network(Login.url+"static/"+outputList[index]['image'].toString(),
+                      fit: BoxFit.cover),
                     ),
                     Column(
                       mainAxisAlignment:
                       MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                    datas[index]['book_name'].toString(),
+                          outputList[index]['book_name'].toString(),
                           style: TextStyle(
+
                               fontWeight: FontWeight.w800,
                               fontSize: 15),
                         ),
                         Text(
-                            datas[index]['author_name'].toString(),
+                          outputList[index]['author_name'].toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14),
                         ),
                         Text(
-                          datas[index]['gen_id'].toString(),
+                          outputList[index]['gendr'].toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14),
                         ),
+                        Text(
+                          outputList[index]['status'].toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14),
+                        ),
+                        // ElevatedButton(
+                        //   style: OutlinedButton.styleFrom(
+                        //       backgroundColor: Color(0xFF88F8FF)),
+                        //   onPressed: () {
+                        //     // print("hello");
+                        //     postdata(outputList[index]['book_id'].toString());
+                        //     print(outputList[index]['book_id'].toString());
+                        //   },
+                        //   child: Text(
+                        //     'Favorite',
+                        //     style: TextStyle(
+                        //         color: Colors.black,
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 15),
+                        //   ),
+                        // ),
                         Row(
                           mainAxisAlignment:MainAxisAlignment.spaceBetween,
                           children: [
@@ -258,27 +346,69 @@ class _homeState extends State<home> {
                               style: TextStyle(fontSize: 15),
                             ),
                           ],
+
                         ),
-                        // Row(
-                        //   mainAxisAlignment:
-                        //       MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     Icon(
-                        //       Icons.swap_horiz_rounded,
-                        //       color: Colors.green[800],
-                        //       size: 40,
-                        //     ),
-                        //     SizedBox(
-                        //       width: 50,
-                        //     ),
-                        //     Icon(
-                        //       Icons.attach_money_outlined,
-                        //       color: Colors.green[800],
-                        //       size: 30,
-                        //     )
-                        //   ],
-                        // ),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              style: OutlinedButton.styleFrom(
+                                  backgroundColor: Color(0xFF88F8FF)),
+                              onPressed: () {
+                                // print("hello");
+                                rent(outputList[index]['book_id'].toString(),
+                                    outputList[index]['u_id'].toString());
+                                // print(outputList[index]['book_id'].toString());
+                              },
+                              child: Text(
+                                'Rent',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            ElevatedButton(
+                              style: OutlinedButton.styleFrom(
+                                  backgroundColor: Color(0xFF88F8FF)),
+                              onPressed: () {
+                                // print("hello");
+                                excng(outputList[index]['book_id'].toString(),
+                                    outputList[index]['u_id'].toString());
+                                // print(outputList[index]['book_id'].toString());
+                              },
+                              child: Text(
+                                'Exchange',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+
+                          ],
+                        ),
+
+
+
+
                       ],
+                    ),
+                    IconButton(
+                      onPressed:() {
+                        // print("hello");
+                        postdata(outputList[index]['book_id'].toString());
+                        print(outputList[index]['book_id'].toString());
+                        setState(() {
+                          isFavourite = false;
+                        });
+                      },
+                      icon: Icon(Icons.favorite,
+                          color: (isFavourite == true)
+                              ? Color(0xFF88F8FF)
+                              : Colors.red),
                     ),
                   ],
                 )),
@@ -337,11 +467,21 @@ class userdraw extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.swap_horizontal_circle,
                 color: Color.fromARGB(240, 0, 120, 129),),
+              title: Text('Predict'),
+              onTap: (){
+                // Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext) => predict()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.swap_horizontal_circle,
+                color: Color.fromARGB(240, 0, 120, 129),),
               title: Text('My Transactions'),
               onTap: (){
                 // Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext) => MyTransactionPage()));
+                    builder: (BuildContext) => transcation()));
               },
             ),
             ListTile(
@@ -354,7 +494,26 @@ class userdraw extends StatelessWidget {
                     builder: (BuildContext) => RequestPage()));
               },
             ),
-
+            ListTile(
+              leading: Icon(Icons.book_outlined,
+                color: Color.fromARGB(240, 0, 120, 129),),
+              title: Text('Exchange Request'),
+              onTap: (){
+                // Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext) => exch_request()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.book_outlined,
+                color: Color.fromARGB(240, 0, 120, 129),),
+              title: Text('View Approved Exchange Request'),
+              onTap: (){
+                // Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext) => vw_app_exch_request()));
+              },
+            ),
             ListTile(
               leading: Icon(Icons.book_outlined,
                 color: Color.fromARGB(240, 0, 120, 129),),
@@ -362,7 +521,7 @@ class userdraw extends StatelessWidget {
               onTap: (){
                 // Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext) => ApprovedPage()));
+                    builder: (BuildContext) => vw_appr_request()));
               },
             ),
             ListTile(

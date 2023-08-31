@@ -5,10 +5,11 @@ import 'package:booklent/forgot_pw.dart';
 import 'package:booklent/home.dart';
 import 'package:booklent/signup.dart';
 import 'package:booklent/user.dart';
+import 'package:booklent/view_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_session/flutter_session.dart';
+// import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart';
 
 class Login extends StatefulWidget {
@@ -17,6 +18,7 @@ class Login extends StatefulWidget {
   @override
   State<Login> createState() => _LoginState();
   static var uid="";
+  static var url="http://192.168.43.200:8000/";
 }
 
 class _LoginState extends State<Login> {
@@ -33,7 +35,7 @@ class _LoginState extends State<Login> {
     super.initState();
   }
   void postdata() async{
-    var url1= Uri.parse("http://192.168.43.200:8000/login/login/");
+    var url1= Uri.parse(Login.url+"login/login/");
     Response resp = await post(url1,body: {
       "username" : username.text,
       "password" : password.text,
@@ -51,13 +53,12 @@ class _LoginState extends State<Login> {
             builder: (BuildContext) => UserHome()));
         showDialog(context: context, builder: (context) => AlertDialog(
             content: Text("you have successfully logged in")));
-
       }
       else if(data[0]['type']=="admin")
         {
           print("hello");
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext) => admin()));
+              builder: (BuildContext) => vusers()));
           showDialog(context: context, builder: (context) => AlertDialog(
               content: Text("you have successfully logged in")));
         }

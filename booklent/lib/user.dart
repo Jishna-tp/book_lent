@@ -1,5 +1,7 @@
 import 'package:booklent/chat.dart';
+import 'package:booklent/chtusr.dart';
 import 'package:booklent/home.dart';
+import 'package:booklent/new_chat.dart';
 import 'package:booklent/notification.dart';
 import 'package:booklent/postbook.dart';
 import 'package:booklent/savedbook.dart';
@@ -17,7 +19,7 @@ class UserHome extends StatefulWidget {
 
 class _UserHomeState extends State<UserHome> {
   int currentTab = 0;
-  final List<Widget> screens = [home(), saved(), notification(), chat()];
+  final List<Widget> screens = [home(), saved(), notification(), chtusr() ];
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = home();
@@ -115,7 +117,7 @@ class _UserHomeState extends State<UserHome> {
                     // minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = chat();
+                        currentScreen = chtusr();
                         currentTab = 4;
                       });
                     },
